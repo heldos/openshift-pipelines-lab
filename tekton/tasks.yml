@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: clean
+spec:
+  steps:
+    - name: clean
+      image: python:3.11
+      script: |
+        #!/usr/bin/env bash
+        rm -rf __pycache__ .pytest_cache *.pyc || true
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: test
+spec:
+  steps:
+    - name: test
+      image: python:3.11
+      script: |
+        #!/usr/bin/env bash
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        nosetests -v
